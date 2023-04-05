@@ -18,9 +18,9 @@ export class StudentsComponent {
     this.studentServrice.getStudents()
       .subscribe(
         (successResponse) => {
-          console.log(successResponse)
+          console.log(successResponse[0].firstName)
+          console.log(successResponse[0].lastName)
         }
-
       );
   }
 }

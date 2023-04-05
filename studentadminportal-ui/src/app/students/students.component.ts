@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { StudentService } from './student.service';
+import { Student } from '../models/ui-models/student.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-students',
@@ -8,19 +12,43 @@ import { StudentService } from './student.service';
 })
 export class StudentsComponent {
 
+  // Intialize it to new empty array
+  student: Student[] = [];
+  // Coulmns to be displayed. These names are actual field/roperty names
+  displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'email', 'mobile', 'gender'];
+  // New Material Table Data Source of type Student
+  dataSource: MatTableDataSource<Student> = new MatTableDataSource<Student>();
+
+  @ViewChild(MatPaginator) matPaginator!: MatPaginator;
+  @ViewChild(MatSort) matSort!: MatSort;
+  filterString = '';
+
   constructor(private studentServrice: StudentService) { }
 
   ngOnInit(): void {
 
-    // Fetch All Students
-    // This is an observable so we have to subscribe to an observable.
+    // Fetch All Students. This is an observable so we have to subscribe to an observable.
     // If we don't subscribe then no http calls will be made
     this.studentServrice.getStudents()
       .subscribe(
         (successResponse) => {
-          console.log(successResponse[0].firstName)
-          console.log(successResponse[0].lastName)
+          this.student = successResponse;
+          this.dataSource = new MatTableDataSource<Student>(this.student);
+
+          if (this.matPaginator) {
+            this.dataSource.paginator = this.matPaginator;
+          }
+
+          if (this.matSort) {
+            this.dataSource.sort = this.matSort;
+          }
         }
       );
+
+
+  }
+
+  filterStudents() {
+    this.dataSource.filter = this.filterString.trim().toLocaleLowerCase();
   }
 }

@@ -51,6 +51,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { HttpClientModule } from '@angular/common/http';
     StudentsComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -98,7 +100,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
-    HttpClientModule
+    HttpClientModule,
+    MatPaginatorModule
   ],
   // To be able to use custom angular material components, we have to provide custom element schema
   // Because these elements provided by material UI are angular UI elements and not HTML5 elements
